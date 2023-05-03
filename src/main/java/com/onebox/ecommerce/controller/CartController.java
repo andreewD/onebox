@@ -89,7 +89,6 @@ public class CartController {
         }
     }
 
-
     @Operation(summary = "Add product to cart", description = "Add product to cart")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = CartRS.class)))})
     @PostMapping(PRODUCT)
