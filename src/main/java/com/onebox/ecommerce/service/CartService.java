@@ -15,7 +15,7 @@ public interface CartService {
     ListCartsRS getAllCarts();
     CartRS getCartById(UUID id);
     CartRS addProduct(UUID id, Integer productId, Integer quantity);
-    CartRS removeProduct(UUID id, Integer productId);
+    CartRS removeProduct(UUID id, Integer productId, Integer quantity);
     Boolean delete(UUID id);
 
 }

@@ -4,6 +4,7 @@ import com.onebox.ecommerce.controller.dtos.ListProductsRS;
 import com.onebox.ecommerce.controller.dtos.ProductRQ;
 import com.onebox.ecommerce.controller.dtos.ProductRS;
 import com.onebox.ecommerce.service.ProductService;
+import com.onebox.ecommerce.utils.ErrorStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +34,12 @@ public class ProductController {
             ))
     })
     @GetMapping
-    public ResponseEntity<ListProductsRS> listProducts() {
-        return ResponseEntity.ok(productService.findAll());
+    public ResponseEntity<?> listProducts() {
+        try{
+            return ResponseEntity.ok(productService.findAll());
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ErrorStatus(e.getMessage()), HttpStatus.CONFLICT);
+        }
     }
 
     @Operation(summary = "Create product", description = "Create product")
@@ -43,7 +49,11 @@ public class ProductController {
             ))
     })
     @PostMapping
-    public ResponseEntity<ProductRS> createProduct(ProductRQ productRQ) {
-        return ResponseEntity.ok(productService.create(productRQ));
+    public ResponseEntity<?> createProduct(ProductRQ productRQ) {
+        try{
+            return ResponseEntity.ok(productService.create(productRQ));
+        }catch (Exception e) {
+            return new ResponseEntity<>(new ErrorStatus(e.getMessage()), HttpStatus.CONFLICT);
+        }
     }
 }

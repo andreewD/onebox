@@ -25,6 +25,9 @@ public class Cart {
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "VARCHAR(36)")
     private UUID id;
 
+    @Column(columnDefinition = "jsonb")
+    private String products;
+
     @Column
     private Double total;
 

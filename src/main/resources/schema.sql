@@ -21,10 +21,3 @@ CREATE TABLE CART (
   created_at TIMESTAMP,
   updated_at TIMESTAMP
 );
-
-CREATE TABLE CART_ITEM(
-  cart_id UUID,
-  product_id BIGINT,
-  quantity INTEGER,
-  price DECIMAL(10,2)
-);
