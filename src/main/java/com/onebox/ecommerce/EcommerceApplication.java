@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @PropertySource("classpath:application.properties")
 public class EcommerceApplication {
-
 	public static void main(String[] args) {
+		System.setProperty("server.servlet.context-path", "/v1");
 		SpringApplication.run(EcommerceApplication.class, args);
 	}
 

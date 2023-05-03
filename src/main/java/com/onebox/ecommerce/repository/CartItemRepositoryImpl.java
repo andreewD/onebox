@@ -1,13 +1,16 @@
 package com.onebox.ecommerce.repository;
 
 import com.onebox.ecommerce.domain.CartItem;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-
+@Repository
+@Transactional
 public class CartItemRepositoryImpl implements CartItemRepository {
     @PersistenceContext(type = PersistenceContextType.TRANSACTION)
     private EntityManager entityManager;
@@ -29,8 +32,8 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
     @Override
     public List<CartItem> getByCartId(UUID cartId) {
-        return entityManager.createQuery("SELECT c FROM CartItem c WHERE c.cart_id = :cartId", CartItem.class)
-                .setParameter("cartId", cartId)
-                .getResultList();
+    return entityManager.createQuery("SELECT c FROM CartItem c WHERE c.cartId = :cartId", CartItem.class)
+            .setParameter("cartId", cartId)
+            .getResultList();
     }
 }

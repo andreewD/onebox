@@ -31,19 +31,25 @@ public class CartServiceImpl implements CartService{
     }
 
     @Override
-    public UUID addNewCart() {
-        return cartRepository.create();
+    public CartRS addNewCart() {
+        UUID id =  cartRepository.create();
+        Cart cart = cartRepository.findById(id);
+        return convert(cart);
     }
 
     private List<CartItemRS> convert(List<CartItem> items){
-        return items.stream().map(item -> {
-            return CartItemRS.builder()
-                    .productId(item.getProductId())
-                    .quantity(item.getQuantity())
-                    .price(item.getPrice())
-                    .build();
-        }).collect(Collectors.toList());
+
+         if(items.isEmpty()){
+              return List.of();
+         }
+
+        return items.stream().map(item -> CartItemRS.builder()
+                .productId(item.getProductId())
+                .quantity(item.getQuantity())
+                .price(item.getPrice())
+                .build()).collect(Collectors.toList());
     }
+
     @Override
     public ListCartsRS getAllCarts() {
         List<Cart> carts =  cartRepository.findAll();
@@ -56,31 +62,43 @@ public class CartServiceImpl implements CartService{
                     .products(convert(cartItems))
                     .createdAt(cart.getCreatedAt())
                     .updatedAt(cart.getUpdatedAt())
-                    .build();}).collect(Collectors.toList());
+                    .build();
+        }).collect(Collectors.toList());
 
         return ListCartsRS.builder().carts(cartsConverted).build();
     }
 
-    @Override
-    public Cart getCartById(UUID id) {
-        return cartRepository.findById(id);
+    private CartRS convert(Cart cart){
+        List<CartItem> cartItems = cartItemRepository.getByCartId(cart.getId());
+        return CartRS.builder()
+                .id(cart.getId())
+                .total(cart.getTotal())
+                .products(convert(cartItems))
+                .createdAt(cart.getCreatedAt())
+                .updatedAt(cart.getUpdatedAt())
+                .build();
     }
 
     @Override
-    public Cart addProduct(UUID id, Integer productId, Integer quantity) {
-
-        return cartRepository.addProduct(id, productId, quantity);
+    public CartRS getCartById(UUID id) {
+        Cart cart =  cartRepository.findById(id);
+        return convert(cart);
     }
 
     @Override
-    public Cart removeProduct(UUID id, Integer productId) {
-        return cartRepository.removeProduct(id, productId);
+    public CartRS addProduct(UUID id, Integer productId, Integer quantity) {
+        Cart cart =  cartRepository.addProduct(id, productId, quantity);
+        return convert(cart);
+    }
+
+    @Override
+    public CartRS removeProduct(UUID id, Integer productId) {
+        return convert(cartRepository.removeProduct(id, productId));
     }
 
     @Override
     public Boolean delete(UUID id) {
          return cartRepository.delete(id);
-
     }
 
 

@@ -1,5 +1,6 @@
 package com.onebox.ecommerce.service;
 
+import com.onebox.ecommerce.controller.dtos.CartRS;
 import com.onebox.ecommerce.controller.dtos.ListCartsRS;
 import com.onebox.ecommerce.domain.Cart;
 import com.onebox.ecommerce.repository.CartRepository;
@@ -10,11 +11,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface CartService {
-    UUID addNewCart();
+    CartRS addNewCart();
     ListCartsRS getAllCarts();
-    Cart getCartById(UUID id);
-    Cart addProduct(UUID id, Integer productId, Integer quantity);
-    Cart removeProduct(UUID id, Integer productId);
+    CartRS getCartById(UUID id);
+    CartRS addProduct(UUID id, Integer productId, Integer quantity);
+    CartRS removeProduct(UUID id, Integer productId);
     Boolean delete(UUID id);
 
 }
